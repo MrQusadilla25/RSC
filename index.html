@@ -802,17 +802,25 @@
     </main>
   </div>
 
-  <footer>
-    <div class="flex justify-center flex-wrap gap-4 py-6">
-        <a class="text-white/60 hover:text-white transition text-xs" href="credits.html">
-            <i class="fa-solid fa-clapperboard mr-1"></i> View Credits
-        </a>
-    </div>
-    <p class="text-center text-xs text-white/50 py-4 max-w-md mx-auto border-t border-white/10">
-    © <script>document.write(new Date().getFullYear());</script>
-    Razor Sharp Culinary. All Rights Reserved. · Website made by Dylan G. · Designed with <i class="fa-solid fa-heart text-red-500"></i>
-    </p>
-  </footer>
+<footer>
+  <div class="flex justify-center flex-wrap gap-4 py-6">
+      <a class="text-white/60 hover:text-white transition text-xs" href="credits.html">
+          <i class="fa-solid fa-clapperboard mr-1"></i> View Credits
+      </a>
+  </div>
+
+  <p class="text-center text-xs text-white/50 py-4 max-w-md mx-auto border-t border-white/10">
+    © <span id="year"></span>
+    Razor Sharp Culinary. All Rights Reserved. · Website made by Dylan G. · Designed with 
+    <i class="fa-solid fa-heart text-red-500"></i>
+  </p>
+</footer>
+
+<script>
+  // Inject current year safely
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
 
   <!-- --- MODAL STRUCTURES --- -->
 

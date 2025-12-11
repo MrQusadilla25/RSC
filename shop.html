@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop RSC — Razor Sharp Culinary</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="bg-black">
+  <div class="nav-shell">
+    <div class="nav">
+      <div class="flex items-center gap-2">
+        <img src="https://i.ibb.co/tT6TNKPT/logo.png" alt="RSC Logo" class="nav-logo mr-1"/>
+        <div>
+          <div class="nav-brand-main text-xs sm:text-sm">RAZOR SHARP CULINARY</div>
+          <div id="member-status-display" class="text-xs font-medium mt-0.5" style="display: none;">
+            <span class="text-green-400 font-bold">MEMBER</span> <span class="text-white/60">ACTIVE</span>
+          </div>
+        </div>
+      </div>
+      <div class="nav-links hidden md:flex items-center gap-6">
+        <a class="nav-link text-white/70 hover:text-white transition" href="index.html#gallery">Gallery</a>
+        <a class="nav-link text-white/70 hover:text-white transition" href="#lineup">Lineup</a>
+        <a class="nav-link text-white/70 hover:text-white transition" href="#compare">Compare</a>
+        <a class="nav-link text-white/70 hover:text-white transition" href="#materials">Materials</a>
+      </div>
+      <div class="flex items-center gap-2 sm:gap-4">
+        <button class="relative p-2 rounded-full transition-colors duration-300 hover:bg-white/10" onclick="openModal('cartModal')">
+            <i class="fa-solid fa-basket-shopping text-white text-lg"></i>
+            <span id="cart-count" class="cart-count absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 text-xs font-bold text-black bg-red-400 rounded-full shadow-lg">0</span>
+        </button>
+        <button id="membership-cta-button" class="nav-cta" onclick="openModal('membershipModal')">
+          <i class="fa-solid fa-star"></i>
+          <span class="hidden sm:inline">Join RSC Elite</span>
+          <span class="sm:hidden">Elite</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <main>
+      <section id="lineup">
+        <div class="section-inner">
+          <div>
+            <div class="text-red-400 font-medium text-sm mb-1">Shop the RSC Edge Series</div>
+            <h2 class="text-3xl sm:text-4xl font-semibold mb-4">From first chop to final slice.</h2>
+          </div>
+          
+          <div class="mt-6 mb-8 flex flex-wrap gap-3">
+              <div class="py-2 px-4 rounded-full text-xs font-semibold bg-red-500 text-black shadow-lg cursor-pointer">All Knives</div>
+              <div class="py-2 px-4 rounded-full text-xs font-semibold bg-black/50 border border-white/20 text-white/80">Chef Knives</div>
+              <div class="py-2 px-4 rounded-full text-xs font-semibold bg-black/50 border border-white/20 text-white/80">Specialty Blades</div>
+              <div class="py-2 px-4 rounded-full text-xs font-semibold bg-black/50 border border-white/20 text-white/80">Sets & Bundles</div>
+          </div>
+
+          <div class="card-grid grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="product-list">
+            
+            <article class="card group">
+              <div class="card-img-wrap">
+                <img src="https://placehold.co/800x600/180305/ff4b4b?text=Chef+Knife+8" alt="Executive Chef Knife 8 inch" class="card-img"/>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold mb-2">Executive Chef Knife · 8"</h3>
+              <p class="text-white/60 mb-4 text-sm">Your everyday blade. Rock, slice, mince, and carve with a profile tuned for both Western and hybrid techniques.</p>
+              
+              <div class="flex justify-between items-center mt-4">
+                <span class="text-xl font-extrabold text-red-400">$120</span>
+                <button class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.05] p-2 text-sm" 
+                        onclick="addToCart({id: 1, name: 'Executive Chef Knife · 8 in', price: 120, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Chef'})">
+                  <i class="fa-solid fa-cart-plus"></i> Add
+                </button>
+              </div>
+            </article>
+
+            <article class="card group">
+              <div class="card-img-wrap">
+                <img src="https://placehold.co/800x600/180305/ff4b4b?text=Santoku+7" alt="Santoku Knife 7 inch" class="card-img"/>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold mb-2">RSC Santoku · 7"</h3>
+              <p class="text-white/60 mb-4 text-sm">A low-profile slicer for ultra-thin vegetables, clean sashimi-style cuts, and fast dicing with less lift.</p>
+              
+              <div class="flex justify-between items-center mt-4">
+                <span class="text-xl font-extrabold text-red-400">$100</span>
+                <button class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.05] p-2 text-sm" 
+                        onclick="addToCart({id: 2, name: 'RSC Santoku · 7 in', price: 100, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Santoku'})">
+                  <i class="fa-solid fa-cart-plus"></i> Add
+                </button>
+              </div>
+            </article>
+
+            <article class="card group">
+              <div class="card-img-wrap">
+                <img src="https://placehold.co/800x600/180305/ff4b4b?text=Duo+Set" alt="Utility and Paring Knife Duo" class="card-img"/>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold mb-2">Utility & Paring Duo</h3>
+              <p class="text-white/60 mb-4 text-sm">Compact blades with big-knife confidence. Perfect for citrus, trimming, garnishes, and board-to-plate moments.</p>
+              
+              <div class="flex justify-between items-center mt-4">
+                <span class="text-xl font-extrabold text-red-400">$80</span>
+                <button class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.05] p-2 text-sm" 
+                        onclick="addToCart({id: 3, name: 'Utility & Paring Duo', price: 80, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Duo'})">
+                  <i class="fa-solid fa-cart-plus"></i> Add
+                </button>
+              </div>
+            </article>
+
+            <article class="card group">
+              <div class="card-img-wrap">
+                <img src="https://placehold.co/800x600/0f0f0f/ff4b4b?text=Blade+Cover" alt="Harm protection blade cover" class="card-img"/>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold mb-2">Harm Protection Cover</h3>
+              <p class="text-white/60 mb-4 text-sm">Snap-on cover to prevent accidental cuts if a knife is left out. Budget-friendly, multiple colors, and engravable.</p>
+              
+              <div class="flex justify-between items-center mt-4">
+                <span class="text-xl font-extrabold text-red-400">$18</span>
+                <button class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.05] p-2 text-sm" 
+                        onclick="addToCart({id: 4, name: 'Harm Protection Cover', price: 18, image: 'https://placehold.co/100x75/0f0f0f/ff4b4b?text=Cover'})">
+                  <i class="fa-solid fa-cart-plus"></i> Add
+                </button>
+              </div>
+            </article>
+
+            <article class="card group">
+              <div class="card-img-wrap">
+                <img src="https://placehold.co/800x600/180305/ff4b4b?text=Bundle+%2B+Save" alt="Bundle Chef and Santoku knives" class="card-img"/>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold mb-2">Bundle & Save: Chef + Santoku</h3>
+              <p class="text-white/60 mb-4 text-sm">Pair the 8" Chef with the 7" Santoku. Perfect balance of rock and glide. Save when you bundle.</p>
+              
+              <div class="flex justify-between items-center mt-4">
+                <span class="text-xl font-extrabold text-red-400">$200 <span class="text-white/50 text-sm line-through ml-2">$220</span></span>
+                <button class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.05] p-2 text-sm" 
+                        onclick="addToCart({id: 5, name: 'Bundle: Chef + Santoku', price: 200, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Bundle'})">
+                  <i class="fa-solid fa-cart-plus"></i> Add
+                </button>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      <section id="compare" class="pt-4">
+        <div class="section-inner">
+          <h3 class="text-2xl sm:text-3xl font-semibold mb-4">Compare the blades</h3>
+          <div class="grid sm:grid-cols-3 gap-4">
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Chef 8"</h4>
+              <p class="text-white/60 text-sm mb-2">Rock, slice, mince. All-rounder with a Western-hybrid profile.</p>
+              <p class="text-white/50 text-xs">Best for: everything from herbs to proteins.</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Santoku 7"</h4>
+              <p class="text-white/60 text-sm mb-2">Low-profile thin grind that glides for vegetables and clean slices.</p>
+              <p class="text-white/50 text-xs">Best for: veg prep, sushi-style cuts.</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Utility & Paring Duo</h4>
+              <p class="text-white/60 text-sm mb-2">Compact precision with big-knife confidence.</p>
+              <p class="text-white/50 text-xs">Best for: citrus, trimming, garnishes.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pt-4">
+        <div class="section-inner">
+          <h3 class="text-2xl sm:text-3xl font-semibold mb-4">Why RSC</h3>
+          <div class="grid sm:grid-cols-3 gap-4">
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Edge retention</h4>
+              <p class="text-white/60 text-sm">High-carbon stainless tuned for sharpness that lasts.</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Balance at the pinch</h4>
+              <p class="text-white/60 text-sm">Weight sits where your hand lands for effortless control.</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Service & sharpening</h4>
+              <p class="text-white/60 text-sm">Add-ons keep your edge pro-ready all year.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pt-4" id="materials">
+        <div class="section-inner">
+          <h3 class="text-2xl sm:text-3xl font-semibold mb-4">Materials & build</h3>
+          <div class="grid sm:grid-cols-3 gap-4">
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Steel</h4>
+              <p class="text-white/60 text-sm">High-carbon stainless</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Hardness</h4>
+              <p class="text-white/60 text-sm">HRC 60 ±1</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Edge angle</h4>
+              <p class="text-white/60 text-sm">15–18° hand-finished</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Handle</h4>
+              <p class="text-white/60 text-sm">Full-tang, triple-riveted</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Balance</h4>
+              <p class="text-white/60 text-sm">Pinch point centered</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <div class="flex justify-center flex-wrap gap-4 py-6">
+        <a class="text-white/60 hover:text-white transition text-xs" href="credits.html">
+            <i class="fa-solid fa-clapperboard mr-1"></i> View Credits
+        </a>
+        <a class="text-white/60 hover:text-white transition text-xs" href="care.html#details">
+            <i class="fa-solid fa-hand-sparkles mr-1"></i> Care & Service
+        </a>
+        <a class="text-white/60 hover:text-white transition text-xs" href="index.html#top">
+            <i class="fa-solid fa-house mr-1"></i> Home
+        </a>
+    </div>
+    <p class="text-center text-xs text-white/50 py-4 max-w-md mx-auto border-t border-white/10">
+    © <script>document.write(new Date().getFullYear());</script>
+    Razor Sharp Culinary. All Rights Reserved. · Website made by Dylan G.
+    </p>
+  </footer>
+
+  <!-- Membership Modal -->
+  <div id="membershipModalBackdrop" class="modal-backdrop" onclick="closeModal('membershipModal')"></div>
+  <div id="membershipModal" class="modal-content w-full max-w-lg">
+    <div class="p-8">
+      <h2 class="text-3xl font-bold text-red-400 mb-4 flex items-center gap-3">
+        RSC Elite Membership <i class="fa-solid fa-crown"></i>
+      </h2>
+      <p class="text-white/80 mb-6 text-lg">
+        Unlock the best of Razor Sharp Culinary for <span class="font-bold text-white">$20/month</span>.
+      </p>
+      <div class="space-y-4 mb-8">
+        <div class="flex items-center gap-3 text-white">
+          <i class="fa-solid fa-key text-red-400"></i>
+          <div>
+            <strong class="block">Early Access Previews</strong>
+            <span class="text-sm text-white/60">Be the first to see and buy new product lines.</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 text-white">
+          <i class="fa-solid fa-scissors text-red-400"></i>
+          <div>
+            <strong class="block">Knife Insurance & Replacement</strong>
+            <span class="text-sm text-white/60">If your RSC knife breaks, we'll replace it—no questions asked.</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 text-white">
+          <i class="fa-solid fa-percent text-red-400"></i>
+          <div>
+            <strong class="block">Exclusive Deals & Coupons</strong>
+            <span class="text-sm text-white/60">Access member-only pricing and discounts.</span>
+          </div>
+        </div>
+      </div>
+      <div id="membership-action-area"></div>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div id="cartModalBackdrop" class="modal-backdrop" onclick="closeModal('cartModal')"></div>
+  <div id="cartModal" class="modal-content w-full max-w-2xl">
+    <div class="p-8">
+      <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center gap-3">
+          <h2 class="text-3xl font-bold text-white flex items-center gap-3">
+            Your Cart <i class="fa-solid fa-shopping-basket text-red-400"></i>
+          </h2>
+          <span id="member-save-badge" class="hidden text-xs font-semibold px-3 py-1 rounded-full bg-green-600 text-white">Members save 10%</span>
+        </div>
+        <button onclick="closeModal('cartModal')" class="text-white/70 hover:text-white transition-colors">
+          <i class="fa-solid fa-xmark text-2xl"></i>
+        </button>
+      </div>
+      
+      <div id="cart-items" class="space-y-4 border-b border-white/10 pb-4">
+        <p id="empty-cart-message" class="text-white/50 text-center py-8">Your basket is empty. Add a blade!</p>
+      </div>
+
+      <div class="flex justify-between items-center py-4">
+        <span class="text-xl font-medium text-white/80">Subtotal:</span>
+        <span id="cart-total" class="text-3xl font-extrabold text-red-400">$0.00</span>
+      </div>
+      <div class="flex items-start gap-2 text-white/60 text-sm mb-2">
+        <i class="fa-solid fa-truck text-red-400 mt-0.5"></i>
+        <div id="cart-shipping">Shipping estimate (fake): $9.00 ground • Ships in 2–4 days</div>
+      </div>
+
+      <button id="checkout-button" class="btn-action w-full bg-red-500 text-black font-extrabold mt-4 disabled:opacity-50 disabled:cursor-not-allowed" onclick="checkout()" disabled>
+        <i class="fa-solid fa-credit-card"></i> Proceed to Fake Checkout
+      </button>
+    </div>
+  </div>
+
+  <!-- Notification Modal -->
+  <div id="notificationModalBackdrop" class="modal-backdrop" onclick="closeModal('notificationModal')"></div>
+  <div id="notificationModal" class="modal-content w-full max-w-sm p-6 text-center">
+      <div id="notification-content"></div>
+      <button class="btn-action bg-white text-black mt-6 hover:bg-red-400 hover:text-white w-full" onclick="closeModal('notificationModal')">
+          Got It
+      </button>
+  </div>
+
+  <script>
+    const STATE = {
+      cart: [],
+      products: [
+        { id: 1, name: 'Executive Chef Knife · 8 in', price: 120, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Chef' },
+        { id: 2, name: 'RSC Santoku · 7 in', price: 100, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Santoku' },
+        { id: 3, name: 'Utility & Paring Duo', price: 80, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Duo' },
+        { id: 4, name: 'Harm Protection Cover', price: 18, image: 'https://placehold.co/100x75/0f0f0f/ff4b4b?text=Cover' },
+        { id: 5, name: 'Bundle: Chef + Santoku', price: 200, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Bundle' }
+      ]
+    };
+
+    function isMember() { return localStorage.getItem('isMember') === 'true'; }
+
+    function updateMembershipUI() {
+      const isUserMember = isMember();
+      const statusDisplay = document.getElementById('member-status-display');
+      const ctaButton = document.getElementById('membership-cta-button');
+      const actionArea = document.getElementById('membership-action-area');
+
+      if (isUserMember) {
+        statusDisplay.style.display = 'block';
+        ctaButton.disabled = true;
+        ctaButton.classList.remove('bg-white', 'text-black', 'border-white/40', 'hover:bg-white/90');
+        ctaButton.classList.add('bg-green-600', 'text-white', 'cursor-default');
+        actionArea.innerHTML = `
+          <p class="text-green-400 font-semibold text-center mt-6">
+              <i class="fa-solid fa-check-circle"></i> Membership is active.
+          </p>
+          <p class="text-sm text-white/60 text-center mt-2">
+              Enjoy your exclusive perks, including knife insurance.
+          </p>
+        `;
+      } else {
+        statusDisplay.style.display = 'none';
+        ctaButton.disabled = false;
+        ctaButton.classList.remove('bg-green-600', 'text-white', 'cursor-default');
+        ctaButton.classList.add('bg-white', 'text-black', 'border-white/40', 'hover:bg-white/90');
+        actionArea.innerHTML = `
+          <button class="btn-action w-full bg-red-500 text-black font-extrabold hover:bg-red-400 hover:scale-[1.03]" onclick="buyMembership()">
+              <i class="fa-solid fa-credit-card"></i> Purchase Membership ($20/month)
+          </button>
+          <p class="text-xs text-white/50 text-center mt-3">This is a fake purchase for demonstration purposes.</p>
+        `;
+      }
+      const isMobile = window.innerWidth < 640;
+      ctaButton.innerHTML = isUserMember 
+          ? `<i class="fa-solid fa-check"></i> <span>Active</span>`
+          : `<i class="fa-solid fa-star"></i> <span class="${isMobile ? 'hidden sm:inline' : ''}">Join RSC Elite</span><span class="${isMobile ? 'sm:hidden' : 'hidden'}">Elite</span>`;
+    }
+
+    function buyMembership() {
+      localStorage.setItem('isMember', 'true');
+      closeModal('membershipModal');
+      updateMembershipUI();
+      showNotification('Membership Activated!', 'Your RSC Elite membership is now active. Enjoy your exclusive perks!', 'fa-solid fa-crown text-4xl text-red-400');
+    }
+
+    function renderCart() {
+      const cartItemsContainer = document.getElementById('cart-items');
+      const cartCountDisplay = document.getElementById('cart-count');
+      const cartTotalDisplay = document.getElementById('cart-total');
+      const checkoutButton = document.getElementById('checkout-button');
+      const shippingLine = document.getElementById('cart-shipping');
+      const memberBadge = document.getElementById('member-save-badge');
+      
+      const storedCart = JSON.parse(localStorage.getItem('cart') || '[]');
+      STATE.cart = storedCart;
+
+      const totalItems = STATE.cart.reduce((sum, item) => sum + item.quantity, 0);
+      const totalPrice = STATE.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      
+      cartCountDisplay.textContent = totalItems;
+      cartTotalDisplay.textContent = `$${totalPrice.toFixed(2)}`;
+      if (shippingLine) {
+          shippingLine.textContent = 'Shipping estimate (fake): $9.00 ground • Ships in 2–4 days';
+      }
+      if (memberBadge) {
+          memberBadge.classList.toggle('hidden', !isMember());
+      }
+
+      checkoutButton.disabled = totalItems === 0;
+
+      let html = '';
+      if (totalItems === 0) {
+        html = `<p class="text-white/50 text-center py-8">Your basket is empty. Add a blade!</p>`;
+      } else {
+        STATE.cart.forEach(item => {
+          html += `
+              <div class="flex items-center gap-4 p-3 bg-black/30 rounded-xl hover:bg-black/50 transition">
+                  <img src="${item.image}" alt="${item.name}" class="w-16 h-12 object-cover rounded-md border border-white/10">
+                  <div class="flex-grow">
+                      <h4 class="font-medium text-white text-sm sm:text-base">${item.name}</h4>
+                      <p class="text-sm text-white/60">$${item.price.toFixed(2)} x ${item.quantity}</p>
+                  </div>
+                  <div class="flex items-center gap-2">
+                      <button onclick="updateQuantity(${item.id}, -1)" class="text-red-400 hover:text-red-500 disabled:opacity-30 p-1">
+                          <i class="fa-solid fa-minus-circle"></i>
+                      </button>
+                      <span class="text-white w-4 text-center">${item.quantity}</span>
+                      <button onclick="updateQuantity(${item.id}, 1)" class="text-red-400 hover:text-red-500 p-1">
+                          <i class="fa-solid fa-plus-circle"></i>
+                      </button>
+                  </div>
+                  <button onclick="updateQuantity(${item.id}, 0)" class="text-white/50 hover:text-red-500 transition-colors ml-2 p-1">
+                      <i class="fa-solid fa-trash-alt"></i>
+                  </button>
+              </div>
+          `;
+        });
+      }
+      cartItemsContainer.innerHTML = html;
+    }
+
+    function addToCart(product) {
+      let cart = STATE.cart;
+      const existingItem = cart.find(item => item.id === product.id);
+
+      if (existingItem) {
+          existingItem.quantity += 1;
+      } else {
+          cart.push({ ...product, quantity: 1 });
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+      showNotification('Item Added', `${product.name} added to your basket!`, 'fa-solid fa-check-circle text-4xl text-green-400');
+    }
+
+    function updateQuantity(productId, change) {
+      let cart = STATE.cart;
+      const index = cart.findIndex(item => item.id === productId);
+
+      if (index > -1) {
+          if (change === 0 || cart[index].quantity + change <= 0) {
+              cart.splice(index, 1);
+          } else {
+              cart[index].quantity += change;
+          }
+          
+          localStorage.setItem('cart', JSON.stringify(cart));
+          renderCart();
+      }
+    }
+
+    function checkout() {
+      if (STATE.cart.length === 0) return;
+      closeModal('cartModal');
+      const finalTotal = STATE.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      showNotification('Order Confirmed!', `Your fake purchase of $${finalTotal.toFixed(2)} has been processed. Thank you for shopping with RSC!`, 'fa-solid fa-box-open text-4xl text-red-400');
+      STATE.cart = [];
+      localStorage.setItem('cart', '[]');
+      setTimeout(renderCart, 500); 
+    }
+
+    function openModal(modalId) {
+      const backdrop = document.getElementById(modalId + 'Backdrop');
+      const content = document.getElementById(modalId);
+      if (backdrop && content) {
+          backdrop.classList.add('active');
+          content.classList.add('active');
+          if (modalId === 'cartModal') {
+              renderCart();
+          }
+          if (modalId === 'membershipModal') {
+              updateMembershipUI();
+          }
+      }
+    }
+
+    function closeModal(modalId) {
+      const backdrop = document.getElementById(modalId + 'Backdrop');
+      const content = document.getElementById(modalId);
+      if (backdrop && content) {
+          backdrop.classList.remove('active');
+          content.classList.remove('active');
+      }
+    }
+
+    function showNotification(title, message, iconClass) {
+      const contentArea = document.getElementById('notification-content');
+      contentArea.innerHTML = `
+          <i class="${iconClass} mb-4"></i>
+          <h3 class="text-2xl font-bold text-white mb-2">${title}</h3>
+          <p class="text-white/70">${message}</p>
+      `;
+      openModal('notificationModal');
+    }
+
+    window.onload = function() {
+      if (localStorage.getItem('isMember') === null) {
+          localStorage.setItem('isMember', 'false');
+      }
+      if (localStorage.getItem('cart') === null) {
+          localStorage.setItem('cart', '[]');
+      }
+      updateMembershipUI();
+      renderCart();
+    };
+    window.addEventListener('resize', updateMembershipUI);
+  </script>
+</body>
+</html>
+

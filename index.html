@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <title>Razor Sharp Culinary — Cut with confidence</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.latest/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <style>
     /* ------------------------------------------------------------------ */
     /* CUSTOM VARIABLES & BASE STYLES */
@@ -94,7 +95,22 @@
     }
     
     .nav-cta {
-      @apply py-2 px-4 md:py-3 md:px-6 rounded-full border border-white/40 bg-white text-black font-semibold text-xs md:text-sm transition-all duration-300 shadow-md;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      background: #ffffff;
+      color: #000000;
+      font-weight: 600;
+      font-size: 0.75rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    @media (min-width: 768px) {
+      .nav-cta {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.875rem;
+      }
     }
     
     /* ------------------------------------------------------------------ */
@@ -178,21 +194,45 @@
     /* Product Lineup Images */
     .card-img-wrap {
         height: 180px; /* Slightly smaller for mobile */
-        @apply mb-4 rounded-xl overflow-hidden;
+        margin-bottom: 1rem;
+        border-radius: 0.75rem;
+        overflow: hidden;
     }
     
     .card-img {
-        @apply w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.05];
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .group:hover .card-img {
+        transform: scale(1.05);
     }
 
     /* Gallery Images (1:1 Ratio - object-contain) */
     .card-img-gallery {
-        @apply w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.05];
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transition: transform 0.5s ease;
+    }
+
+    .group:hover .card-img-gallery {
+        transform: scale(1.05);
     }
     
     /* Action Button Utility */
     .btn-action {
-        @apply py-3 px-6 rounded-full font-semibold transition-all duration-300 ease-out flex items-center justify-center gap-2 text-sm;
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        font-weight: 600;
+        transition: all 0.3s ease-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
     }
     
     /* ------------------------------------------------------------------ */
@@ -286,7 +326,7 @@
     /* Starts at 100vh (just below screen) and ends at -100vh (just above screen) */
     @keyframes creditsRoll {
       0% { transform: translateY(100vh); } 
-      100% { transform: translateY(-100vh); }
+      100% { transform: translateY(-120vh); }
     }
     
     /* Hide scrollbar for clean look */
@@ -308,7 +348,7 @@
       <div class="flex items-center gap-2">
         <img src="https://i.ibb.co/tT6TNKPT/logo.png" alt="RSC Logo" class="nav-logo mr-1"/>
         <div class="nav-brand-text">
-          <div class="nav-brand-main text-xs sm:text-sm">RAZOR SHARP CULLINARY</div>
+          <div class="nav-brand-main text-xs sm:text-sm">RAZOR SHARP CULINARY</div>
           <!-- Membership Status Badge -->
           <div id="member-status-display" class="text-xs font-medium mt-0.5" style="display: none;">
             <span class="text-green-400 font-bold">MEMBER</span> <span class="text-white/60">ACTIVE</span>
@@ -319,8 +359,8 @@
       <!-- Links hidden on mobile to prioritize screen space -->
       <div class="nav-links hidden md:flex items-center gap-6">
         <a class="nav-link text-white/70 hover:text-white transition" href="#gallery">Gallery</a>
-        <a class="nav-link text-white/70 hover:text-white transition" href="#lineup">Lineup</a>
-        <a class="nav-link text-white/70 hover:text-white transition" href="#details">Care</a>
+        <a class="nav-link text-white/70 hover:text-white transition" href="shop.html#lineup">Lineup</a>
+        <a class="nav-link text-white/70 hover:text-white transition" href="care.html#details">Care</a>
       </div>
 
       <div class="flex items-center gap-2 sm:gap-4">
@@ -353,7 +393,7 @@
         </p>
 
         <div class="flex justify-center flex-wrap gap-4" data-animate style="transition-delay: 0.1s;">
-          <a class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.03]" href="#lineup">
+          <a class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.03]" href="shop.html#lineup">
             <i class="fa-solid fa-arrow-right"></i> Shop Knives
           </a>
           <a class="btn-action bg-black/50 border border-white/20 text-white hover:border-white/50" href="#precision">
@@ -408,6 +448,80 @@
                 </div>
               </div>
             </div>
+        </div>
+      </section>
+
+      <!-- COMPARE BLADES -->
+      <section class="pt-4" id="compare">
+        <div class="section-inner">
+          <h3 class="text-2xl sm:text-3xl font-semibold mb-4">Compare the blades</h3>
+          <div class="grid sm:grid-cols-3 gap-4">
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Chef 8"</h4>
+              <p class="text-white/60 text-sm mb-2">Rock, slice, mince. All-rounder with a Western-hybrid profile.</p>
+              <p class="text-white/50 text-xs">Best for: everything from herbs to proteins.</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Santoku 7"</h4>
+              <p class="text-white/60 text-sm mb-2">Low-profile thin grind that glides for vegetables and clean slices.</p>
+              <p class="text-white/50 text-xs">Best for: veg prep, sushi-style cuts.</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Utility & Paring Duo</h4>
+              <p class="text-white/60 text-sm mb-2">Compact precision with big-knife confidence.</p>
+              <p class="text-white/50 text-xs">Best for: citrus, trimming, garnishes.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHY RSC -->
+      <section class="pt-4">
+        <div class="section-inner">
+          <h3 class="text-2xl sm:text-3xl font-semibold mb-4">Why RSC</h3>
+          <div class="grid sm:grid-cols-3 gap-4">
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Edge retention</h4>
+              <p class="text-white/60 text-sm">High-carbon stainless tuned for sharpness that lasts.</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Balance at the pinch</h4>
+              <p class="text-white/60 text-sm">Weight sits where your hand lands for effortless control.</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Service & sharpening</h4>
+              <p class="text-white/60 text-sm">Add-ons keep your edge pro-ready all year.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MATERIALS & BUILD -->
+      <section class="pt-4">
+        <div class="section-inner">
+          <h3 class="text-2xl sm:text-3xl font-semibold mb-4">Materials & build</h3>
+          <div class="grid sm:grid-cols-3 gap-4">
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Steel</h4>
+              <p class="text-white/60 text-sm">High-carbon stainless</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Hardness</h4>
+              <p class="text-white/60 text-sm">HRC 60 ±1</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Edge angle</h4>
+              <p class="text-white/60 text-sm">15–18° hand-finished</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Handle</h4>
+              <p class="text-white/60 text-sm">Full-tang, triple-riveted</p>
+            </div>
+            <div class="card p-4">
+              <h4 class="font-bold text-lg mb-2">Balance</h4>
+              <p class="text-white/60 text-sm">Pinch point centered</p>
+            </div>
+          </div>
         </div>
       </section>
       
@@ -539,7 +653,7 @@
               <div class="flex justify-between items-center mt-4">
                 <span class="text-xl font-extrabold text-red-400">$120</span>
                 <button class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.05] p-2 text-sm" 
-                        onclick="addToCart({id: 1, name: 'Executive Chef Knife (8")', price: 120, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Chef'})">
+                        onclick="addToCart({id: 1, name: 'Executive Chef Knife · 8 in', price: 120, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Chef'})">
                   <i class="fa-solid fa-cart-plus"></i> Add
                 </button>
               </div>
@@ -555,7 +669,7 @@
               <div class="flex justify-between items-center mt-4">
                 <span class="text-xl font-extrabold text-red-400">$100</span>
                 <button class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.05] p-2 text-sm" 
-                        onclick="addToCart({id: 2, name: 'RSC Santoku (7")', price: 100, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Santoku'})">
+                        onclick="addToCart({id: 2, name: 'RSC Santoku · 7 in', price: 100, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Santoku'})">
                   <i class="fa-solid fa-cart-plus"></i> Add
                 </button>
               </div>
@@ -572,6 +686,38 @@
                 <span class="text-xl font-extrabold text-red-400">$80</span>
                 <button class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.05] p-2 text-sm" 
                         onclick="addToCart({id: 3, name: 'Utility & Paring Duo', price: 80, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Duo'})">
+                  <i class="fa-solid fa-cart-plus"></i> Add
+                </button>
+              </div>
+            </article>
+
+            <article class="card stagger-item group" style="transition-delay: 0.3s;">
+              <div class="card-img-wrap">
+                <img src="https://placehold.co/800x600/0f0f0f/ff4b4b?text=Blade+Cover" alt="Harm protection blade cover" class="card-img"/>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold mb-2">Harm Protection Cover</h3>
+              <p class="text-white/60 mb-4 text-sm">Snap-on cover to prevent accidental cuts if a knife is left out. Budget-friendly, multiple colors, and engravable for personalization.</p>
+              
+              <div class="flex justify-between items-center mt-4">
+                <span class="text-xl font-extrabold text-red-400">$18</span>
+                <button class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.05] p-2 text-sm" 
+                        onclick="addToCart({id: 4, name: 'Harm Protection Cover', price: 18, image: 'https://placehold.co/100x75/0f0f0f/ff4b4b?text=Cover'})">
+                  <i class="fa-solid fa-cart-plus"></i> Add
+                </button>
+              </div>
+            </article>
+
+            <article class="card stagger-item group" style="transition-delay: 0.4s;">
+              <div class="card-img-wrap">
+                <img src="https://placehold.co/800x600/180305/ff4b4b?text=Bundle+%2B+Save" alt="Bundle Chef and Santoku knives" class="card-img"/>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold mb-2">Bundle & Save: Chef + Santoku</h3>
+              <p class="text-white/60 mb-4 text-sm">Pair the 8" Chef with the 7" Santoku. Perfect balance of rock and glide. Save when you bundle.</p>
+              
+              <div class="flex justify-between items-center mt-4">
+                <span class="text-xl font-extrabold text-red-400">$200 <span class="text-white/50 text-sm line-through ml-2">$220</span></span>
+                <button class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.05] p-2 text-sm" 
+                        onclick="addToCart({id: 5, name: 'Bundle: Chef + Santoku', price: 200, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Bundle'})">
                   <i class="fa-solid fa-cart-plus"></i> Add
                 </button>
               </div>
@@ -658,13 +804,13 @@
 
   <footer>
     <div class="flex justify-center flex-wrap gap-4 py-6">
-        <button class="text-white/60 hover:text-white transition text-xs" onclick="openCredits()">
+        <a class="text-white/60 hover:text-white transition text-xs" href="credits.html">
             <i class="fa-solid fa-clapperboard mr-1"></i> View Credits
-        </button>
+        </a>
     </div>
     <p class="text-center text-xs text-white/50 py-4 max-w-md mx-auto border-t border-white/10">
     © <script>document.write(new Date().getFullYear());</script>
-    Razor Sharp Cullinary. All Rights Reserved. · Website made by Dylan G. · Designed with <i class="fa-solid fa-heart text-red-500"></i>
+    Razor Sharp Culinary. All Rights Reserved. · Website made by Dylan G. · Designed with <i class="fa-solid fa-heart text-red-500"></i>
     </p>
   </footer>
 
@@ -717,9 +863,12 @@
   <div id="cartModal" class="modal-content w-full max-w-2xl">
     <div class="p-8">
       <div class="flex justify-between items-center mb-6">
-        <h2 class="text-3xl font-bold text-white flex items-center gap-3">
-          Your Cart <i class="fa-solid fa-shopping-basket text-red-400"></i>
-        </h2>
+        <div class="flex items-center gap-3">
+          <h2 class="text-3xl font-bold text-white flex items-center gap-3">
+            Your Cart <i class="fa-solid fa-shopping-basket text-red-400"></i>
+          </h2>
+          <span id="member-save-badge" class="hidden text-xs font-semibold px-3 py-1 rounded-full bg-green-600 text-white">Members save 10%</span>
+        </div>
         <button onclick="closeModal('cartModal')" class="text-white/70 hover:text-white transition-colors">
           <i class="fa-solid fa-xmark text-2xl"></i>
         </button>
@@ -733,6 +882,10 @@
       <div class="flex justify-between items-center py-4">
         <span class="text-xl font-medium text-white/80">Subtotal:</span>
         <span id="cart-total" class="text-3xl font-extrabold text-red-400">$0.00</span>
+      </div>
+      <div class="flex items-start gap-2 text-white/60 text-sm mb-2">
+        <i class="fa-solid fa-truck text-red-400 mt-0.5"></i>
+        <div id="cart-shipping">Shipping estimate (fake): $9.00 ground • Ships in 2–4 days</div>
       </div>
 
       <button id="checkout-button" class="btn-action w-full bg-red-500 text-black font-extrabold mt-4 disabled:opacity-50 disabled:cursor-not-allowed" onclick="checkout()" disabled>
@@ -766,9 +919,11 @@
     const STATE = {
         cart: [],
         products: [
-            { id: 1, name: 'Executive Chef Knife (8")', price: 120, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Chef' },
-            { id: 2, name: 'RSC Santoku (7")', price: 100, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Santoku' },
-            { id: 3, name: 'Utility & Paring Duo', price: 80, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Duo' }
+            { id: 1, name: 'Executive Chef Knife · 8 in', price: 120, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Chef' },
+            { id: 2, name: 'RSC Santoku · 7 in', price: 100, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Santoku' },
+            { id: 3, name: 'Utility & Paring Duo', price: 80, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Duo' },
+            { id: 4, name: 'Harm Protection Cover', price: 18, image: 'https://placehold.co/100x75/0f0f0f/ff4b4b?text=Cover' },
+            { id: 5, name: 'Bundle: Chef + Santoku', price: 200, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Bundle' }
         ],
         creditAnimationTimeout: null
     };
@@ -835,7 +990,8 @@
         const cartCountDisplay = document.getElementById('cart-count');
         const cartTotalDisplay = document.getElementById('cart-total');
         const checkoutButton = document.getElementById('checkout-button');
-        const emptyMessage = document.getElementById('empty-cart-message');
+        const shippingLine = document.getElementById('cart-shipping');
+        const memberBadge = document.getElementById('member-save-badge');
         
         const storedCart = JSON.parse(localStorage.getItem('cart') || '[]');
         STATE.cart = storedCart;
@@ -845,14 +1001,21 @@
         
         cartCountDisplay.textContent = totalItems;
         cartTotalDisplay.textContent = `$${totalPrice.toFixed(2)}`;
+        if (shippingLine) {
+            shippingLine.textContent = 'Shipping estimate (fake): $9.00 ground • Ships in 2–4 days';
+        }
+        if (memberBadge) {
+            memberBadge.classList.toggle('hidden', !isMember());
+        }
 
         checkoutButton.disabled = totalItems === 0;
-        emptyMessage.style.display = totalItems === 0 ? 'block' : 'none';
 
-        cartItemsContainer.innerHTML = '';
-        if (totalItems > 0) {
-             STATE.cart.forEach(item => {
-                cartItemsContainer.innerHTML += `
+        let html = '';
+        if (totalItems === 0) {
+            html = `<p class="text-white/50 text-center py-8">Your basket is empty. Add a blade!</p>`;
+        } else {
+            STATE.cart.forEach(item => {
+                html += `
                     <div class="flex items-center gap-4 p-3 bg-black/30 rounded-xl hover:bg-black/50 transition">
                         <img src="${item.image}" alt="${item.name}" class="w-16 h-12 object-cover rounded-md border border-white/10">
                         <div class="flex-grow">
@@ -875,6 +1038,7 @@
                 `;
             });
         }
+        cartItemsContainer.innerHTML = html;
     }
 
     function addToCart(product) {
@@ -968,79 +1132,43 @@
         // Generates the content for the credit roll
         return `
             <div class="space-y-10 py-[50vh] text-white/80">
-                <p class="text-6xl font-extrabold text-red-400 opacity-80 mb-20">RAZOR SHARP CULLINARY</p>
+                <p class="text-6xl font-extrabold text-red-400 opacity-80 mb-20">RAZOR SHARP CULINARY</p>
 
-                <!-- ------------------------ EXECUTIVE ------------------------ -->
                 <div class="role-group">
-                    <h4 class="text-2xl">Creative Direction</h4>
-                    <p>Dylan Garcia</p>
-                </div>
-                
-                <div class="role-group">
-                    <h4 class="text-2xl">Project Lead & Development</h4>
-                    <p>Dylan Garcia</p>
-                </div>
-
-                <div class="h-16"></div>
-
-                <!-- ------------------------ LEADERSHIP ------------------------ -->
-                <div class="role-group">
-                    <h4 class="text-xl">Executive Founders</h4>
-                    <p>Timothy McLeod</p>
-                    <p>Jake Rikkhi</p>
-                </div>
-
-                <div class="h-16"></div>
-
-                <!-- ------------------------ ENGINEERING ------------------------ -->
-                <div class="role-group">
-                    <h4 class="text-xl">Materials Engineering & Sourcing</h4>
-                    <p>Alex Chen</p>
-                    <p>Dr. Evelyn Reed (Metallurgist)</p>
+                    <h4 class="text-lg text-red-400 uppercase tracking-[0.2em]">Cut with confidence</h4>
+                    <p class="text-white/60 text-sm">From prep to plate, RSC makes great.</p>
                 </div>
 
                 <div class="role-group">
-                    <h4 class="text-xl">Design & Ergonomics</h4>
-                    <p>Sarah Lopez</p>
+                    <h4 class="text-2xl">Dylan Garcia</h4>
+                    <p>Website Developer</p>
                 </div>
 
-                <div class="h-16"></div>
-
-                <!-- ------------------------ PRODUCTION & LOGISTICS ------------------------ -->
                 <div class="role-group">
-                    <h4 class="text-xl">Production Manager</h4>
-                    <p>Mike 'The Blade' Johnson</p>
-                </div>
-                
-                <div class="role-group">
-                    <h4 class="text-xl">Logistics & Distribution</h4>
-                    <p>Team Razor - US Operations</p>
-                    <p>Team Sharp - Global Shipping</p>
-                </div>
-                
-                <div class="h-16"></div>
-
-                <!-- ------------------------ TECHNOLOGY ------------------------ -->
-                <div class="role-group">
-                    <h4 class="text-xl">Front-End Development Platform</h4>
-                    <p>The Gemini Model (AI-Assisted Code Generation)</p>
-                </div>
-                
-                <div class="role-group">
-                    <h4 class="text-xl">Design & Tooling</h4>
-                    <p>Tailwind CSS Framework</p>
-                    <p>Font Awesome Iconography</p>
-                    <p>Inter Typeface by Google Fonts</p>
+                    <h4 class="text-2xl">Francesco Stephen Cava</h4>
+                    <p>The Goat (Virtual Enterprise Teacher)</p>
                 </div>
 
-
-                <div class="h-64"></div>
-                
-                <!-- ------------------------ CLOSING MESSAGE ------------------------ -->
                 <div class="role-group">
-                    <h4 class="text-3xl font-extrabold text-white">THANK YOU FOR YOUR SUPPORT</h4>
-                    <p class="text-5xl font-extrabold text-red-500 mt-4">CUT WITH CONFIDENCE</p>
-                    <p class="text-white/50 text-xl mt-8">Presented by Razor Sharp Culinary</p>
+                    <h4 class="text-2xl">Timothy Mcleod</h4>
+                    <p>Founder of RSC</p>
+                </div>
+
+                <div class="role-group">
+                    <h4 class="text-2xl">Jake Rikkhi</h4>
+                    <p>Co-Founder of RSC</p>
+                </div>
+
+                <div class="role-group">
+                    <h4 class="text-2xl">The Rest of the RSC Team</h4>
+                    <p>Thank you for keeping the edge sharp.</p>
+                </div>
+
+                <div class="h-20"></div>
+
+                <div class="role-group">
+                    <h4 class="text-3xl font-extrabold text-white">OUR QUOTES</h4>
+                    <p class="text-xl text-white/70 mt-4">“Franchise, Franchise, Franchise.” — Jake</p>
                 </div>
 
                 <div class="h-[100vh]"></div> <!-- Extra space to ensure text rolls completely off screen -->
@@ -1062,13 +1190,13 @@
         
         // 3. Start animation after a very short delay to ensure visibility is applied
         setTimeout(() => {
-            // Animation time set to 35s for the expanded content
-            content.style.animation = 'creditsRoll 35s linear forwards';
+            // Animation time set to 15s for the updated roll
+            content.style.animation = 'creditsRoll 15s linear forwards';
         }, 10);
         
-        // 4. Set timeout to auto-close after roll + fade time (35s + 1.5s fade)
+        // 4. Set timeout to auto-close after roll + fade time (15s + 1.5s fade)
         clearTimeout(STATE.creditAnimationTimeout);
-        STATE.creditAnimationTimeout = setTimeout(closeCredits, 36500); 
+        STATE.creditAnimationTimeout = setTimeout(closeCredits, 16500); 
     }
 
     function closeCredits() {

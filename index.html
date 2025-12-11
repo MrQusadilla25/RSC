@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Razor Sharp Culinary — Cut with confidence</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.latest/css/all.min.css">
+  <style>
+    /* ------------------------------------------------------------------ */
+    /* CUSTOM VARIABLES & BASE STYLES */
+    /* ------------------------------------------------------------------ */
+    :root {
+      /* Theme Colors */
+      --bg-main: #050000;
+      --accent-red: #ff4b4b;
+      --text-main: #ffffff;
+      
+      /* Spacing & Effects */
+      --radius-lg: 26px;
+      --shadow-deep: 0 24px 60px rgba(0, 0, 0, 0.95);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --max-width: 1120px;
+      --transition-fast: 0.3s ease-out;
+      --transition-smooth: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      /* Deep, rich radial background */
+      background: radial-gradient(circle at top, #300306 0%, #050000 60%, #000000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 14px 16px 40px;
+    }
+    
+    /* ------------------------------------------------------------------ */
+    /* NAVIGATION & HEADER STYLES */
+    /* ------------------------------------------------------------------ */
+
+    .nav-shell {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px); /* Slightly less blur for mobile performance */
+      background: rgba(0,0,0,0.7);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 10px 16px; 
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 14px;
+    }
+    
+    .nav-brand-main {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-main);
+    }
+
+    /* Black Logo on Dark BG requires filter to make it visible (white) */
+    .nav-logo {
+        height: 30px;
+        filter: invert(100%); /* Makes black logo white */
+    }
+    
+    .nav-cta {
+      @apply py-2 px-4 md:py-3 md:px-6 rounded-full border border-white/40 bg-white text-black font-semibold text-xs md:text-sm transition-all duration-300 shadow-md;
+    }
+    
+    /* ------------------------------------------------------------------ */
+    /* MODAL STYLES */
+    /* ------------------------------------------------------------------ */
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.85);
+        z-index: 50;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease;
+    }
+
+    .modal-backdrop.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .modal-content {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        z-index: 60;
+        background: linear-gradient(150deg, rgba(0,0,0,0.95), #120103);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-deep);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    /* Ensure mobile responsiveness for modals */
+    @media (max-width: 640px) {
+        .modal-content {
+            width: 95%;
+            margin: 0 auto;
+            max-width: none;
+        }
+    }
+
+    .modal-content.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* COMPONENTS */
+    /* ------------------------------------------------------------------ */
+
+    /* Section defaults */
+    section {
+      padding: 60px 0 40px; /* Reduced padding for mobile */
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    
+    /* Card component styling */
+    .card {
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      background: linear-gradient(150deg, rgba(0,0,0,0.8), #120103);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    
+    .card:hover {
+      transform: translateY(-3px) translateZ(0);
+      box-shadow: 0 15px 35px rgba(255, 75, 75, 0.1);
+    }
+    
+    /* Product Lineup Images */
+    .card-img-wrap {
+        height: 180px; /* Slightly smaller for mobile */
+        @apply mb-4 rounded-xl overflow-hidden;
+    }
+    
+    .card-img {
+        @apply w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.05];
+    }
+
+    /* Gallery Images (1:1 Ratio - object-contain) */
+    .card-img-gallery {
+        @apply w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.05];
+    }
+    
+    /* Action Button Utility */
+    .btn-action {
+        @apply py-3 px-6 rounded-full font-semibold transition-all duration-300 ease-out flex items-center justify-center gap-2 text-sm;
+    }
+    
+    /* ------------------------------------------------------------------ */
+    /* ANIMATIONS & EFFECTS */
+    /* ------------------------------------------------------------------ */
+    
+    /* Scroll-in elements */
+    [data-animate] {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--transition-smooth), 
+                  transform var(--transition-smooth);
+    }
+
+    [data-animate].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Staggered cards/list items */
+    .stagger-item {
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    .stagger-item.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* CREDITS MODAL STYLES (Movie Credit Roll) */
+    /* ------------------------------------------------------------------ */
+    .credits-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 1);
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* --- Initial Hidden State --- */
+        opacity: 0;
+        visibility: hidden;
+        /* ---------------------------- */
+        transition: opacity 1.5s ease-out;
+        cursor: pointer;
+    }
+
+    .credits-backdrop.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .credits-roll-container {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        font-family: 'Times New Roman', serif;
+    }
+    
+    .credits-content {
+        position: absolute;
+        width: 100%;
+        color: white;
+        text-align: center;
+        /* NOTE: The 'white-space: nowrap;' fix was removed in previous step */
+        bottom: 0; 
+    }
+    
+    .credits-content h4 {
+        font-weight: 700;
+        color: #ff4b4b; /* Accent red for roles */
+        margin-top: 1.5rem;
+        font-size: 1.5rem;
+    }
+    
+    .credits-content p {
+        margin-top: 0.25rem;
+        color: white;
+        font-size: 1.25rem;
+        line-height: 1.5;
+    }
+
+    /* Keyframe for the rolling animation */
+    /* Starts at 100vh (just below screen) and ends at -100vh (just above screen) */
+    @keyframes creditsRoll {
+      0% { transform: translateY(100vh); } 
+      100% { transform: translateY(-100vh); }
+    }
+    
+    /* Hide scrollbar for clean look */
+    .credits-roll-container::-webkit-scrollbar {
+        display: none;
+    }
+    .credits-roll-container {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+  </style>
+</head>
+
+<body class="bg-black">
+  <!-- NAV BAR -->
+  <div class="nav-shell">
+    <div class="nav">
+      <div class="flex items-center gap-2">
+        <img src="https://i.ibb.co/tT6TNKPT/logo.png" alt="RSC Logo" class="nav-logo mr-1"/>
+        <div class="nav-brand-text">
+          <div class="nav-brand-main text-xs sm:text-sm">RAZOR SHARP CULLINARY</div>
+          <!-- Membership Status Badge -->
+          <div id="member-status-display" class="text-xs font-medium mt-0.5" style="display: none;">
+            <span class="text-green-400 font-bold">MEMBER</span> <span class="text-white/60">ACTIVE</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Links hidden on mobile to prioritize screen space -->
+      <div class="nav-links hidden md:flex items-center gap-6">
+        <a class="nav-link text-white/70 hover:text-white transition" href="#gallery">Gallery</a>
+        <a class="nav-link text-white/70 hover:text-white transition" href="#lineup">Lineup</a>
+        <a class="nav-link text-white/70 hover:text-white transition" href="#details">Care</a>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-4">
+        <!-- Cart Button -->
+        <button class="relative p-2 rounded-full transition-colors duration-300 hover:bg-white/10" onclick="openModal('cartModal')">
+            <i class="fa-solid fa-basket-shopping text-white text-lg"></i>
+            <span id="cart-count" class="cart-count absolute -top-1 -right-1 flex items-center justify-center h-4 w-4 text-xs font-bold text-black bg-red-400 rounded-full shadow-lg">0</span>
+        </button>
+        
+        <!-- Membership CTA -->
+        <button id="membership-cta-button" class="nav-cta" onclick="openModal('membershipModal')">
+          <i class="fa-solid fa-star"></i>
+          <span class="hidden sm:inline">Join RSC Elite</span>
+          <span class="sm:hidden">Elite</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <main>
+      <!-- HERO -->
+      <section class="hero text-center pt-16 pb-10" id="top">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-4 leading-tight" data-animate>
+          Cut with confidence.<br />
+          <span class="text-red-400">The chef's evolution.</span>
+        </h1>
+        <p class="text-white/70 text-base sm:text-lg max-w-2xl mx-auto mb-8" data-animate>
+          Professional-grade knives for kitchens that demand more. Engineered for balance and unmatched edge retention.
+        </p>
+
+        <div class="flex justify-center flex-wrap gap-4" data-animate style="transition-delay: 0.1s;">
+          <a class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.03]" href="#lineup">
+            <i class="fa-solid fa-arrow-right"></i> Shop Knives
+          </a>
+          <a class="btn-action bg-black/50 border border-white/20 text-white hover:border-white/50" href="#precision">
+            <i class="fa-solid fa-gem text-red-400/80"></i> Learn How It’s Made
+          </a>
+        </div>
+
+        <!-- Product Display Area -->
+        <div class="mt-12 md:mt-16 bg-black/50 border border-white/10 rounded-[30px] p-6 sm:p-10" id="product-wrap">
+            <div class="hero-product-inner grid sm:grid-cols-2 grid-cols-1 gap-8 items-center">
+              
+              <!-- Copy (Order first on mobile, second on desktop) -->
+              <div class="flex flex-col sm:order-first order-last text-left">
+                <div class="text-2xl font-bold mb-3">
+                  A blade that feels as considered as the dish.
+                </div>
+                <p class="text-white/70 text-base mb-6">
+                  The RSC Edge profile pairs a fine, durable bevel with a balanced spine,
+                  so every slice feels straight, steady, and intentional.
+                </p>
+
+                <div class="flex flex-wrap gap-x-6 gap-y-4 text-sm">
+                  <div class="hero-spec">
+                    <div class="text-white/50 text-xs uppercase tracking-wider">Edge angle</div>
+                    <div class="font-medium text-white">15–18° hand-finished</div>
+                  </div>
+                  <div class="hero-spec">
+                    <div class="text-white/50 text-xs uppercase tracking-wider">Construction</div>
+                    <div class="font-medium text-white">Full-tang · Triple-riveted</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Product Display for Parallax Effect (Order last on mobile, first on desktop) -->
+              <div class="relative min-h-[150px] sm:min-h-[250px] sm:order-last order-first" style="perspective: 1000px;">
+                <!-- Fixed width for handle, flexible for blade image -->
+                <div class="hero-product-blade" id="product-blade" style="
+                    transition: transform 0.2s ease-out;
+                    transform-style: preserve-3d;
+                    transform: perspective(1000px) rotateX(10deg) rotateY(-12deg) translateY(0px) rotateZ(0deg);
+                    will-change: transform;
+                ">
+                  <!-- Simplified Blade Representation (using a gradient block for effect) -->
+                  <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-full h-full bg-white/5 opacity-10 rounded-xl"></div>
+                  </div>
+                  <!-- Handle -->
+                  <div class="absolute rounded-l-full" style="z-index: 1; bottom: 10%; left: -10%; width: 40%; height: 40%; background: linear-gradient(145deg, #0f0305, #2d0506 50%, #5a0a0a 80%, #120103 100%);"></div>
+                  <!-- Blade Shimmer (Simulated) -->
+                  <div class="absolute top-10 right-0 h-1/2 w-3/4 rounded-l-full bg-gradient-to-r from-transparent via-white/20 to-transparent" 
+                       style="transform: rotate(10deg); filter: blur(1px);"></div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </section>
+      
+      <!-- HERO GALLERY -->
+      <section id="gallery" class="py-8 sm:py-16 border-t-0">
+        <div class="section-inner">
+          <div data-animate class="text-center">
+            <div class="text-red-400 font-medium text-sm mb-1">Uncompromising Detail</div>
+            <h2 class="text-3xl sm:text-4xl font-semibold">Every Angle. Every Reflection.</h2>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 stagger-group mt-8">
+            
+            <!-- Image 1 - Enforced 1:1 and object-contain -->
+            <div class="card p-0 overflow-hidden group stagger-item">
+              <div class="relative w-full aspect-square overflow-hidden bg-black/50 flex items-center justify-center p-4">
+                <img src="https://i.ibb.co/dR1yTpC/24471-A05-FE66-49-DE-8-C11-998-D2-CDFC5-E0.png" 
+                     alt="Close-up hero shot of a knife blade and handle"
+                     class="card-img-gallery"
+                     onerror="this.onerror=null; this.src='https://placehold.co/800x800/180305/ff4b4b?text=Image+1+Fallback'"
+                />
+              </div>
+              <div class="p-4 flex justify-between items-center bg-black/50">
+                <p class="text-sm text-white/80 font-medium"><i class="fa-solid fa-grip-lines mr-1"></i> Handle Ergonomics</p>
+                <i class="fa-solid fa-up-right-from-square text-red-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity"></i>
+              </div>
+            </div>
+            
+            <!-- Image 2 - Enforced 1:1 and object-contain -->
+            <div class="card p-0 overflow-hidden group stagger-item" style="transition-delay: 0.1s;">
+              <div class="relative w-full aspect-square overflow-hidden bg-black/50 flex items-center justify-center p-4">
+                <img src="https://i.ibb.co/PdDz84d/29-CD7375-7494-460-B-A986-D2-CAFE76-B143.png" 
+                     alt="Knife resting on a dark, textured surface"
+                     class="card-img-gallery"
+                     onerror="this.onerror=null; this.src='https://placehold.co/800x800/180305/ff4b4b?text=Image+2+Fallback'"
+                />
+              </div>
+              <div class="p-4 flex justify-between items-center bg-black/50">
+                <p class="text-sm text-white/80 font-medium"><i class="fa-solid fa-meteor mr-1"></i> Dramatic Blade Profile</p>
+                <i class="fa-solid fa-up-right-from-square text-red-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRECISION ENGINEERING (Section 2) -->
+      <section id="precision">
+        <div class="section-inner grid md:grid-cols-2 grid-cols-1 gap-10">
+          <div data-animate class="stagger-group order-2 md:order-1">
+            <div class="text-red-400 font-medium text-sm mb-1">Precision engineering</div>
+            <h2 class="text-3xl sm:text-4xl font-semibold mb-4">Built to disappear in your hand.</h2>
+            <p class="text-white/70 mb-8">
+              Every Razor Sharp Culinary blade is tuned for one feeling: effortless control. From the grind of the edge to the curve of the handle, nothing is accidental.
+            </p>
+            <ul class="space-y-6 text-white/90 text-base">
+              <li class="stagger-item flex items-start gap-3">
+                <i class="fa-solid fa-weight-hanging text-xl text-red-400/80 mt-1 flex-shrink-0"></i>
+                <div>
+                    <strong>Balanced at the pinch.</strong>
+                    <span class="block text-white/60 text-sm">The weight sits where your hand naturally lands, making long prep sessions feel lighter.</span>
+                </div>
+              </li>
+              <li class="stagger-item flex items-start gap-3" style="transition-delay: 0.1s;">
+                <i class="fa-solid fa-shield-halved text-xl text-red-400/80 mt-1 flex-shrink-0"></i>
+                <div>
+                    <strong>Edge retention that lasts.</strong>
+                    <span class="block text-white/60 text-sm">High-carbon stainless steel resists staining while staying sharper, longer.</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div data-animate class="stagger-group p-6 rounded-3xl bg-black/50 border border-white/10 shadow-xl order-1 md:order-2">
+            <div class="text-red-400 font-medium text-sm mb-1">Dialed-in details</div>
+            <h3 class="text-2xl font-semibold mb-6">Micro-Refinements</h3>
+            <div class="space-y-4">
+                <div class="flex items-center gap-4 p-3 bg-black/30 rounded-xl hover:bg-black/50 transition duration-300">
+                    <i class="fa-solid fa-angle-right text-red-400 text-lg"></i>
+                    <div>
+                        <p class="font-medium">15–18° Precision Edge</p>
+                        <p class="text-white/60 text-sm">Masterfully ground for fine cutting geometry.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 p-3 bg-black/30 rounded-xl hover:bg-black/50 transition duration-300">
+                    <i class="fa-solid fa-angle-right text-red-400 text-lg"></i>
+                    <div>
+                        <p class="font-medium">Hand-polished Spine & Choil</p>
+                        <p class="text-white/60 text-sm">Comfortable for the index finger and thumb grip.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 p-3 bg-black/30 rounded-xl hover:bg-black/50 transition duration-300">
+                    <i class="fa-solid fa-angle-right text-red-400 text-lg"></i>
+                    <div>
+                        <p class="font-medium">Tapered Bolster</p>
+                        <p class="text-white/60 text-sm">Ensures easy sharpening across the full blade length.</p>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- KNIFE LINEUP / E-COMMERCE -->
+      <section id="lineup">
+        <div class="section-inner">
+          <div data-animate>
+            <div class="text-red-400 font-medium text-sm mb-1">Shop the RSC Edge Series</div>
+            <h2 class="text-3xl sm:text-4xl font-semibold mb-4">From first chop to final slice.</h2>
+          </div>
+          
+          <!-- CATEGORY FILTER (Visual Only) -->
+          <div class="mt-6 mb-8 flex flex-wrap gap-3" data-animate style="transition-delay: 0.1s;">
+              <div class="py-2 px-4 rounded-full text-xs font-semibold bg-red-500 text-black shadow-lg cursor-pointer">All Knives</div>
+              <div class="py-2 px-4 rounded-full text-xs font-semibold bg-black/50 border border-white/20 text-white/80 hover:bg-red-900/40 cursor-pointer transition">Chef Knives</div>
+              <div class="py-2 px-4 rounded-full text-xs font-semibold bg-black/50 border border-white/20 text-white/80 hover:bg-red-900/40 cursor-pointer transition">Specialty Blades</div>
+              <div class="py-2 px-4 rounded-full text-xs font-semibold bg-black/50 border border-white/20 text-white/80 hover:bg-red-900/40 cursor-pointer transition">Sets & Bundles</div>
+          </div>
+
+          <div class="card-grid stagger-group grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="product-list">
+            
+            <article class="card stagger-item group">
+              <div class="card-img-wrap">
+                <img src="https://placehold.co/800x600/180305/ff4b4b?text=Chef+Knife+8" alt="Executive Chef Knife 8 inch" class="card-img"/>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold mb-2">Executive Chef Knife · 8"</h3>
+              <p class="text-white/60 mb-4 text-sm">Your everyday blade. Rock, slice, mince, and carve with a profile tuned for both Western and hybrid techniques.</p>
+              
+              <div class="flex justify-between items-center mt-4">
+                <span class="text-xl font-extrabold text-red-400">$120</span>
+                <button class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.05] p-2 text-sm" 
+                        onclick="addToCart({id: 1, name: 'Executive Chef Knife (8")', price: 120, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Chef'})">
+                  <i class="fa-solid fa-cart-plus"></i> Add
+                </button>
+              </div>
+            </article>
+
+            <article class="card stagger-item group" style="transition-delay: 0.1s;">
+              <div class="card-img-wrap">
+                <img src="https://placehold.co/800x600/180305/ff4b4b?text=Santoku+7" alt="Santoku Knife 7 inch" class="card-img"/>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold mb-2">RSC Santoku · 7"</h3>
+              <p class="text-white/60 mb-4 text-sm">A low-profile slicer for ultra-thin vegetables, clean sashimi-style cuts, and fast dicing with less lift.</p>
+              
+              <div class="flex justify-between items-center mt-4">
+                <span class="text-xl font-extrabold text-red-400">$100</span>
+                <button class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.05] p-2 text-sm" 
+                        onclick="addToCart({id: 2, name: 'RSC Santoku (7")', price: 100, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Santoku'})">
+                  <i class="fa-solid fa-cart-plus"></i> Add
+                </button>
+              </div>
+            </article>
+
+            <article class="card stagger-item group" style="transition-delay: 0.2s;">
+              <div class="card-img-wrap">
+                <img src="https://placehold.co/800x600/180305/ff4b4b?text=Duo+Set" alt="Utility and Paring Knife Duo" class="card-img"/>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold mb-2">Utility & Paring Duo</h3>
+              <p class="text-white/60 mb-4 text-sm">Compact blades with big-knife confidence. Perfect for citrus, trimming, garnishes, and board-to-plate moments.</p>
+              
+              <div class="flex justify-between items-center mt-4">
+                <span class="text-xl font-extrabold text-red-400">$80</span>
+                <button class="btn-action bg-white text-black hover:bg-red-400 hover:text-white transform hover:scale-[1.05] p-2 text-sm" 
+                        onclick="addToCart({id: 3, name: 'Utility & Paring Duo', price: 80, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Duo'})">
+                  <i class="fa-solid fa-cart-plus"></i> Add
+                </button>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- DETAILS / CARE (Section 3) -->
+      <section id="details">
+        <div class="section-inner grid md:grid-cols-2 grid-cols-1 gap-10">
+          <div data-animate class="stagger-group order-2 md:order-1">
+            <div class="text-red-400 font-medium text-sm mb-1">Details & care</div>
+            <h2 class="text-3xl sm:text-4xl font-semibold mb-4">Sharp today. Sharper in a year.</h2>
+            <p class="text-white/70 mb-8">
+              A great knife is an investment. RSC is designed to stay with you in the kitchen—
+              and stay sharp—with just simple care.
+            </p>
+            <ul class="space-y-6 text-white/90 text-base">
+              <li class="stagger-item flex items-start gap-3">
+                <i class="fa-solid fa-circle-notch text-xl text-red-400/80 mt-1 flex-shrink-0"></i>
+                <div>
+                    <strong>Hone, don’t fight.</strong>
+                    <span class="block text-white/60 text-sm">A few passes on a honing steel before service keeps the edge aligned and ready.</span>
+                </div>
+              </li>
+              <li class="stagger-item flex items-start gap-3" style="transition-delay: 0.1s;">
+                <i class="fa-solid fa-soap text-xl text-red-400/80 mt-1 flex-shrink-0"></i>
+                <div>
+                    <strong>Hand-wash only.</strong>
+                    <span class="block text-white/60 text-sm">Clean quickly, dry completely, and store safely. Your blade will thank you.</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div data-animate class="stagger-group p-6 rounded-3xl bg-black/50 border border-white/10 shadow-xl order-1 md:order-2">
+            <div class="text-red-400 font-medium text-sm mb-1">Designed for display</div>
+            <h3 class="text-2xl font-semibold mb-6">Storage & Aesthetics</h3>
+            <div class="space-y-4">
+                <div class="flex items-center gap-4 p-3 bg-black/30 rounded-xl hover:bg-black/50 transition duration-300">
+                    <i class="fa-solid fa-ruler-combined text-red-400 text-lg"></i>
+                    <div>
+                        <p class="font-medium">Custom Engraving Available</p>
+                        <p class="text-white/60 text-sm">Personalize your blade for the perfect gift.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 p-3 bg-black/30 rounded-xl hover:bg-black/50 transition duration-300">
+                    <i class="fa-solid fa-gift text-red-400 text-lg"></i>
+                    <div>
+                        <p class="font-medium">Service & Sharpening Add-ons</p>
+                        <p class="text-white/60 text-sm">Keep your collection razor-sharp year-round.</p>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT / ORDER -->
+      <section id="contact" class="bg-[radial-gradient(circle_at_top,_#200204,_#050000)] py-12 sm:py-16">
+        <div class="section-inner" data-animate>
+          <div class="p-6 sm:p-8 rounded-3xl border border-red-400/30 shadow-2xl text-center">
+            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-3">Ready to put RSC on your line?</h3>
+            <p class="text-white/70 mb-8 max-w-xl mx-auto text-sm sm:text-base">
+              From home cooks to busy services, we outfit kitchens that care about
+              what touches every ingredient: the knife.
+            </p>
+
+            <div class="flex justify-center flex-wrap gap-4">
+              <!-- EMAIL LINK FIXED -->
+              <a href="mailto:dylang234@nycstudents.net" class="btn-action bg-black/50 border border-white/20 text-white hover:bg-black/70 hover:border-white/50">
+                <i class="fa-solid fa-envelope"></i> Email Us
+              </a>
+              <button class="btn-action bg-red-500 text-black font-extrabold hover:bg-red-400 hover:scale-[1.03]" onclick="document.getElementById('lineup').scrollIntoView({behavior:'smooth'})">
+                <i class="fa-solid fa-tag"></i> Start Shopping
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <div class="flex justify-center flex-wrap gap-4 py-6">
+        <button class="text-white/60 hover:text-white transition text-xs" onclick="openCredits()">
+            <i class="fa-solid fa-clapperboard mr-1"></i> View Credits
+        </button>
+    </div>
+    <p class="text-center text-xs text-white/50 py-4 max-w-md mx-auto border-t border-white/10">
+    © <script>document.write(new Date().getFullYear());</script>
+    Razor Sharp Cullinary. All Rights Reserved. · Website made by Dylan G. · Designed with <i class="fa-solid fa-heart text-red-500"></i>
+    </p>
+  </footer>
+
+  <!-- --- MODAL STRUCTURES --- -->
+
+  <!-- Membership Modal -->
+  <div id="membershipModalBackdrop" class="modal-backdrop" onclick="closeModal('membershipModal')"></div>
+  <div id="membershipModal" class="modal-content w-full max-w-lg">
+    <div class="p-8">
+      <h2 class="text-3xl font-bold text-red-400 mb-4 flex items-center gap-3">
+        RSC Elite Membership <i class="fa-solid fa-crown"></i>
+      </h2>
+      <p class="text-white/80 mb-6 text-lg">
+        Unlock the best of Razor Sharp Culinary for <span class="font-bold text-white">$20/month</span>.
+      </p>
+
+      <div class="space-y-4 mb-8">
+        <div class="flex items-center gap-3 text-white">
+          <i class="fa-solid fa-key text-red-400"></i>
+          <div>
+            <strong class="block">Early Access Previews</strong>
+            <span class="text-sm text-white/60">Be the first to see and buy new product lines.</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 text-white">
+          <i class="fa-solid fa-scissors text-red-400"></i>
+          <div>
+            <strong class="block">Knife Insurance & Replacement</strong>
+            <span class="text-sm text-white/60">If your RSC knife breaks, we'll replace it—no questions asked.</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 text-white">
+          <i class="fa-solid fa-percent text-red-400"></i>
+          <div>
+            <strong class="block">Exclusive Deals & Coupons</strong>
+            <span class="text-sm text-white/60">Access member-only pricing and discounts.</span>
+          </div>
+        </div>
+      </div>
+      
+      <div id="membership-action-area">
+        <!-- Content inserted by JS based on membership status -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div id="cartModalBackdrop" class="modal-backdrop" onclick="closeModal('cartModal')"></div>
+  <div id="cartModal" class="modal-content w-full max-w-2xl">
+    <div class="p-8">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold text-white flex items-center gap-3">
+          Your Cart <i class="fa-solid fa-shopping-basket text-red-400"></i>
+        </h2>
+        <button onclick="closeModal('cartModal')" class="text-white/70 hover:text-white transition-colors">
+          <i class="fa-solid fa-xmark text-2xl"></i>
+        </button>
+      </div>
+      
+      <div id="cart-items" class="space-y-4 border-b border-white/10 pb-4">
+        <!-- Cart items populated here by JS -->
+        <p id="empty-cart-message" class="text-white/50 text-center py-8">Your basket is empty. Add a blade!</p>
+      </div>
+
+      <div class="flex justify-between items-center py-4">
+        <span class="text-xl font-medium text-white/80">Subtotal:</span>
+        <span id="cart-total" class="text-3xl font-extrabold text-red-400">$0.00</span>
+      </div>
+
+      <button id="checkout-button" class="btn-action w-full bg-red-500 text-black font-extrabold mt-4 disabled:opacity-50 disabled:cursor-not-allowed" onclick="checkout()" disabled>
+        <i class="fa-solid fa-credit-card"></i> Proceed to Fake Checkout
+      </button>
+    </div>
+  </div>
+  
+  <!-- Confirmation/Notification Modal (Single Use) -->
+  <div id="notificationModalBackdrop" class="modal-backdrop" onclick="closeModal('notificationModal')"></div>
+  <div id="notificationModal" class="modal-content w-full max-w-sm p-6 text-center">
+      <div id="notification-content"></div>
+      <button class="btn-action bg-white text-black mt-6 hover:bg-red-400 hover:text-white w-full" onclick="closeModal('notificationModal')">
+          Got It
+      </button>
+  </div>
+
+  <!-- --- CREDITS MODAL --- -->
+  <!-- Note: credits-backdrop/content are controlled by their own special CSS -->
+  <div id="creditsModalBackdrop" class="credits-backdrop" onclick="closeCredits()">
+    <div class="credits-roll-container">
+      <div id="credits-content" class="credits-content">
+        <!-- Content inserted by JS -->
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    // --- Global State & Initialization ---
+    const STATE = {
+        cart: [],
+        products: [
+            { id: 1, name: 'Executive Chef Knife (8")', price: 120, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Chef' },
+            { id: 2, name: 'RSC Santoku (7")', price: 100, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Santoku' },
+            { id: 3, name: 'Utility & Paring Duo', price: 80, image: 'https://placehold.co/100x75/180305/ff4b4b?text=Duo' }
+        ],
+        creditAnimationTimeout: null
+    };
+
+    // --- Local Storage and Membership Logic ---
+
+    function isMember() {
+        return localStorage.getItem('isMember') === 'true';
+    }
+
+    function updateMembershipUI() {
+        const isUserMember = isMember();
+        const statusDisplay = document.getElementById('member-status-display');
+        const ctaButton = document.getElementById('membership-cta-button');
+        const actionArea = document.getElementById('membership-action-area');
+
+        if (isUserMember) {
+            statusDisplay.style.display = 'block';
+            ctaButton.disabled = true;
+            ctaButton.classList.remove('bg-white', 'text-black', 'border-white/40', 'hover:bg-white/90');
+            ctaButton.classList.add('bg-green-600', 'text-white', 'cursor-default');
+            
+            actionArea.innerHTML = `
+                <p class="text-green-400 font-semibold text-center mt-6">
+                    <i class="fa-solid fa-check-circle"></i> Congratulations! Your RSC Elite Membership is active.
+                </p>
+                <p class="text-sm text-white/60 text-center mt-2">
+                    Enjoy your exclusive perks, including knife insurance.
+                </p>
+            `;
+
+        } else {
+            statusDisplay.style.display = 'none';
+            ctaButton.disabled = false;
+            ctaButton.classList.remove('bg-green-600', 'text-white', 'cursor-default');
+            ctaButton.classList.add('bg-white', 'text-black', 'border-white/40', 'hover:bg-white/90');
+            
+            actionArea.innerHTML = `
+                <button class="btn-action w-full bg-red-500 text-black font-extrabold hover:bg-red-400 hover:scale-[1.03]" onclick="buyMembership()">
+                    <i class="fa-solid fa-credit-card"></i> Purchase Membership ($20/month)
+                </button>
+                <p class="text-xs text-white/50 text-center mt-3">This is a fake purchase for demonstration purposes.</p>
+            `;
+        }
+        // Update the button text separately for mobile/desktop visibility
+        const isMobile = window.innerWidth < 640;
+        ctaButton.innerHTML = isUserMember 
+            ? `<i class="fa-solid fa-check"></i> <span>Active</span>`
+            : `<i class="fa-solid fa-star"></i> <span class="${isMobile ? 'hidden sm:inline' : ''}">Join RSC Elite</span><span class="${isMobile ? 'sm:hidden' : 'hidden'}">Elite</span>`;
+    }
+
+    function buyMembership() {
+        localStorage.setItem('isMember', 'true');
+        closeModal('membershipModal');
+        updateMembershipUI();
+        showNotification('Membership Activated!', 'Your RSC Elite membership is now active. Enjoy your exclusive perks!', 'fa-solid fa-crown text-4xl text-red-400');
+    }
+
+
+    // --- E-commerce / Cart Logic ---
+
+    function renderCart() {
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartCountDisplay = document.getElementById('cart-count');
+        const cartTotalDisplay = document.getElementById('cart-total');
+        const checkoutButton = document.getElementById('checkout-button');
+        const emptyMessage = document.getElementById('empty-cart-message');
+        
+        const storedCart = JSON.parse(localStorage.getItem('cart') || '[]');
+        STATE.cart = storedCart;
+
+        const totalItems = STATE.cart.reduce((sum, item) => sum + item.quantity, 0);
+        const totalPrice = STATE.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        cartCountDisplay.textContent = totalItems;
+        cartTotalDisplay.textContent = `$${totalPrice.toFixed(2)}`;
+
+        checkoutButton.disabled = totalItems === 0;
+        emptyMessage.style.display = totalItems === 0 ? 'block' : 'none';
+
+        cartItemsContainer.innerHTML = '';
+        if (totalItems > 0) {
+             STATE.cart.forEach(item => {
+                cartItemsContainer.innerHTML += `
+                    <div class="flex items-center gap-4 p-3 bg-black/30 rounded-xl hover:bg-black/50 transition">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-12 object-cover rounded-md border border-white/10">
+                        <div class="flex-grow">
+                            <h4 class="font-medium text-white text-sm sm:text-base">${item.name}</h4>
+                            <p class="text-sm text-white/60">$${item.price.toFixed(2)} x ${item.quantity}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="updateQuantity(${item.id}, -1)" class="text-red-400 hover:text-red-500 disabled:opacity-30 p-1">
+                                <i class="fa-solid fa-minus-circle"></i>
+                            </button>
+                            <span class="text-white w-4 text-center">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)" class="text-red-400 hover:text-red-500 p-1">
+                                <i class="fa-solid fa-plus-circle"></i>
+                            </button>
+                        </div>
+                        <button onclick="updateQuantity(${item.id}, 0)" class="text-white/50 hover:text-red-500 transition-colors ml-2 p-1">
+                            <i class="fa-solid fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+            });
+        }
+    }
+
+    function addToCart(product) {
+        let cart = STATE.cart;
+        const existingItem = cart.find(item => item.id === product.id);
+
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+        
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+        
+        showNotification('Item Added', `${product.name} added to your basket!`, 'fa-solid fa-check-circle text-4xl text-green-400');
+    }
+
+    function updateQuantity(productId, change) {
+        let cart = STATE.cart;
+        const index = cart.findIndex(item => item.id === productId);
+
+        if (index > -1) {
+            if (change === 0 || cart[index].quantity + change <= 0) {
+                cart.splice(index, 1);
+            } else {
+                cart[index].quantity += change;
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+        }
+    }
+
+    function checkout() {
+        if (STATE.cart.length === 0) return;
+
+        closeModal('cartModal');
+        const finalTotal = STATE.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        showNotification(
+            'Order Confirmed!', 
+            `Your fake purchase of $${finalTotal.toFixed(2)} has been processed. Thank you for shopping with RSC!`,
+            'fa-solid fa-box-open text-4xl text-red-400'
+        );
+
+        STATE.cart = [];
+        localStorage.setItem('cart', '[]');
+        setTimeout(renderCart, 500); 
+    }
+
+    // --- Modal Control Functions ---
+    
+    function openModal(modalId) {
+        const backdrop = document.getElementById(modalId + 'Backdrop');
+        const content = document.getElementById(modalId);
+        if (backdrop && content) {
+            backdrop.classList.add('active');
+            content.classList.add('active');
+            if (modalId === 'cartModal') {
+                renderCart();
+            }
+            if (modalId === 'membershipModal') {
+                updateMembershipUI();
+            }
+        }
+    }
+
+    function closeModal(modalId) {
+        const backdrop = document.getElementById(modalId + 'Backdrop');
+        const content = document.getElementById(modalId);
+        if (backdrop && content) {
+            backdrop.classList.remove('active');
+            content.classList.remove('active');
+        }
+    }
+    
+    function showNotification(title, message, iconClass) {
+        const contentArea = document.getElementById('notification-content');
+        contentArea.innerHTML = `
+            <i class="${iconClass} mb-4"></i>
+            <h3 class="text-2xl font-bold text-white mb-2">${title}</h3>
+            <p class="text-white/70">${message}</p>
+        `;
+        openModal('notificationModal');
+    }
+
+    // --- CREDITS ROLL LOGIC (Enhanced Content) ---
+
+    function generateCreditsHTML() {
+        // Generates the content for the credit roll
+        return `
+            <div class="space-y-10 py-[50vh] text-white/80">
+                <p class="text-6xl font-extrabold text-red-400 opacity-80 mb-20">RAZOR SHARP CULLINARY</p>
+
+                <!-- ------------------------ EXECUTIVE ------------------------ -->
+                <div class="role-group">
+                    <h4 class="text-2xl">Creative Direction</h4>
+                    <p>Dylan Garcia</p>
+                </div>
+                
+                <div class="role-group">
+                    <h4 class="text-2xl">Project Lead & Development</h4>
+                    <p>Dylan Garcia</p>
+                </div>
+
+                <div class="h-16"></div>
+
+                <!-- ------------------------ LEADERSHIP ------------------------ -->
+                <div class="role-group">
+                    <h4 class="text-xl">Executive Founders</h4>
+                    <p>Timothy McLeod</p>
+                    <p>Jake Rikkhi</p>
+                </div>
+
+                <div class="h-16"></div>
+
+                <!-- ------------------------ ENGINEERING ------------------------ -->
+                <div class="role-group">
+                    <h4 class="text-xl">Materials Engineering & Sourcing</h4>
+                    <p>Alex Chen</p>
+                    <p>Dr. Evelyn Reed (Metallurgist)</p>
+                </div>
+
+                <div class="role-group">
+                    <h4 class="text-xl">Design & Ergonomics</h4>
+                    <p>Sarah Lopez</p>
+                </div>
+
+                <div class="h-16"></div>
+
+                <!-- ------------------------ PRODUCTION & LOGISTICS ------------------------ -->
+                <div class="role-group">
+                    <h4 class="text-xl">Production Manager</h4>
+                    <p>Mike 'The Blade' Johnson</p>
+                </div>
+                
+                <div class="role-group">
+                    <h4 class="text-xl">Logistics & Distribution</h4>
+                    <p>Team Razor - US Operations</p>
+                    <p>Team Sharp - Global Shipping</p>
+                </div>
+                
+                <div class="h-16"></div>
+
+                <!-- ------------------------ TECHNOLOGY ------------------------ -->
+                <div class="role-group">
+                    <h4 class="text-xl">Front-End Development Platform</h4>
+                    <p>The Gemini Model (AI-Assisted Code Generation)</p>
+                </div>
+                
+                <div class="role-group">
+                    <h4 class="text-xl">Design & Tooling</h4>
+                    <p>Tailwind CSS Framework</p>
+                    <p>Font Awesome Iconography</p>
+                    <p>Inter Typeface by Google Fonts</p>
+                </div>
+
+
+                <div class="h-64"></div>
+                
+                <!-- ------------------------ CLOSING MESSAGE ------------------------ -->
+                <div class="role-group">
+                    <h4 class="text-3xl font-extrabold text-white">THANK YOU FOR YOUR SUPPORT</h4>
+                    <p class="text-5xl font-extrabold text-red-500 mt-4">CUT WITH CONFIDENCE</p>
+                    <p class="text-white/50 text-xl mt-8">Presented by Razor Sharp Culinary</p>
+                </div>
+
+                <div class="h-[100vh]"></div> <!-- Extra space to ensure text rolls completely off screen -->
+            </div>
+        `;
+    }
+
+    function openCredits() {
+        const backdrop = document.getElementById('creditsModalBackdrop');
+        const content = document.getElementById('credits-content');
+        
+        // 1. Reset and fill content
+        content.innerHTML = generateCreditsHTML();
+        content.style.animation = 'none'; // Clear any previous animation
+        void content.offsetWidth; // Trigger reflow/re-render to apply the reset
+        
+        // 2. Set backdrop to active (instant appearance)
+        backdrop.classList.add('active'); // Activates opacity/visibility transitions
+        
+        // 3. Start animation after a very short delay to ensure visibility is applied
+        setTimeout(() => {
+            // Animation time set to 35s for the expanded content
+            content.style.animation = 'creditsRoll 35s linear forwards';
+        }, 10);
+        
+        // 4. Set timeout to auto-close after roll + fade time (35s + 1.5s fade)
+        clearTimeout(STATE.creditAnimationTimeout);
+        STATE.creditAnimationTimeout = setTimeout(closeCredits, 36500); 
+    }
+
+    function closeCredits() {
+        const backdrop = document.getElementById('creditsModalBackdrop');
+        const content = document.getElementById('credits-content');
+        
+        clearTimeout(STATE.creditAnimationTimeout);
+        
+        // 1. Stop animation and hide text immediately (on user click or timeout)
+        content.style.animation = 'none';
+        content.innerHTML = ''; // Clear content to prevent flicker on next open
+        
+        // 2. Start fade out of the black screen
+        backdrop.classList.remove('active');
+        
+        // 3. Complete fade-out by setting visibility to hidden after transition
+        setTimeout(() => {
+            // Note: The CSS transition handles opacity, we just set the final state here
+        }, 1500); // Matches the 1.5s transition time in CSS
+    }
+
+
+    // --- Animation & Initial Load ---
+
+    window.onload = function() {
+        // Initialize state
+        if (localStorage.getItem('isMember') === null) {
+            localStorage.setItem('isMember', 'false');
+        }
+        updateMembershipUI();
+        renderCart();
+
+        // Intersection Observer for Scroll-In Animations (Staggered)
+        const observerOptions = { root: null, rootMargin: "0px", threshold: 0.15 };
+
+        // Observer for main blocks (data-animate)
+        const mainObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+
+        document.querySelectorAll("[data-animate]").forEach(el => mainObserver.observe(el));
+
+        // Observer for staggered items (cards, list items)
+        const staggerObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const group = entry.target;
+              const items = group.querySelectorAll(".stagger-item");
+              items.forEach((item, index) => {
+                setTimeout(() => {
+                  item.classList.add("is-visible");
+                }, index * 100); 
+              });
+              observer.unobserve(group);
+            }
+          });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll(".stagger-group").forEach(el => staggerObserver.observe(el));
+
+
+        // Parallax Effect for Hero Product Blade 
+        const productWrap = document.getElementById('product-wrap');
+        const productBlade = document.getElementById('product-blade');
+
+        if (productWrap && productBlade) {
+          function handleParallax() {
+            const rect = productWrap.getBoundingClientRect();
+            const center = rect.top + rect.height / 2;
+            const windowHeight = window.innerHeight;
+            const scrollFactor = (center - windowHeight / 2) / (windowHeight / 2);
+            
+            const translateY = scrollFactor * 10; // Subtle shift
+            const rotateZ = scrollFactor * 0.5; 
+            
+            if (scrollFactor > -1.5 && scrollFactor < 1.5) {
+                 productBlade.style.transform = `
+                    perspective(1000px) 
+                    rotateX(10deg) 
+                    rotateY(-12deg) 
+                    translateY(${translateY}px) 
+                    rotateZ(${rotateZ}deg)
+                `;
+            }
+          }
+
+          window.addEventListener('scroll', handleParallax);
+          window.addEventListener('resize', handleParallax);
+          handleParallax();
+        }
+    };
+    
+    // Listen for resize to update CTA button text for mobile
+    window.addEventListener('resize', updateMembershipUI);
+  </script>
+</body>
+</html>
+
